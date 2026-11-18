@@ -1,7 +1,7 @@
 /* 请在这时打开 · Service Worker
  * 修改任何文件后，把 CACHE_VERSION 加一，用户下次打开就会收到「新版本」提示。
  */
-const CACHE_VERSION = 'v1.2.0';
+const CACHE_VERSION = 'v1.3.0';
 const CACHE_NAME = `please-open-now-${CACHE_VERSION}`;
 const APP_SHELL = [
   './',
