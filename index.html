@@ -2,110 +2,243 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>请在这时打开</title>
+<meta name="description" content="一个只属于你的私人信箱：选择今天的心情，拆开一封来自 TA 的信。">
+<meta name="theme-color" content="#faf6f1">
+<meta name="color-scheme" content="light">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="请在这时打开">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta property="og:title" content="请在这时打开">
+<meta property="og:description" content="选择今天的心情，拆开一封来自 TA 的信。">
+<meta property="og:image" content="icons/icon-512.png">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.5 4.5 7 4.5c2 0 3.5 1.1 5 3 1.5-1.9 3-3 5-3 3.5 0 5.6 3.5 4.3 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17l5-4.5 3.5 3 3-2.5L20 17"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M10 7V5h4v2M7 7l1 12.5h8L17 7"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M4 9h16v10.5H4z"/><path d="M3 5.5h18V9H3z"/><path d="M10 12.5h4"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M4 7h3.5c4 0 5 10 9 10H20M4 17h3.5c1.6 0 2.7-1.6 3.6-3.5M14 9.5c.8-1.4 1.6-2.5 2.5-2.5H20M17.5 4.5L20 7l-2.5 2.5M17.5 14.5L20 17l-2.5 2.5"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19.5h14"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4M8 7.5L12 3.5l4 4M6 11v8.5h12V11"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+</svg>
+
 <div id="app">
+  <main id="main" tabindex="-1">
+
   <!-- 首页：信箱陈列 -->
-  <section id="home" class="screen active">
-    <div class="header">
-      <div class="logo">请在这时打开</div>
-      <div class="names" id="display-names">
+  <section id="home" class="screen active" aria-labelledby="home-title">
+    <header class="header">
+      <h1 class="logo" id="home-title">请在这时打开</h1>
+      <button class="names" id="edit-names-btn" type="button" aria-label="修改名字">
         <span id="user-name-display">你</span>
-        <span class="dot">·</span>
+        <span class="dot" aria-hidden="true">·</span>
         <span id="ta-name-display">TA</span>
-      </div>
-      <button class="icon-btn" id="edit-names-btn" aria-label="修改名字">✎</button>
-    </div>
+        <svg class="ico ico-sm" aria-hidden="true"><use href="#i-pen"/></svg>
+      </button>
+    </header>
 
     <div class="mailbox-area">
-      <div class="envelope-stack" id="envelope-stack">
-        <!-- 信封将由 JS 动态生成 -->
-      </div>
+      <button class="envelope-stack" id="envelope-stack" type="button" aria-label="随机拆一封信">
+        <span class="envelope-preview"></span>
+        <span class="envelope-preview"></span>
+        <span class="envelope-preview"><span class="mini-seal" aria-hidden="true"></span></span>
+      </button>
+      <p class="greeting" id="greeting">今天，也有一封信在等你。</p>
       <p class="hint">选择今天的心情，拆开一封来自 TA 的信</p>
     </div>
 
-    <div class="mood-grid" id="mood-grid">
-      <!-- 心情按钮由 JS 生成 -->
+    <h2 class="section-label" id="mood-label">今天的心情</h2>
+    <div class="mood-grid" id="mood-grid" role="group" aria-labelledby="mood-label">
+      <p class="loading">信件整理中…</p>
     </div>
-
-    <div class="bottom-nav">
-      <button class="nav-btn active" data-screen="home">信箱</button>
-      <button class="nav-btn" data-screen="history">我们的信箱</button>
-      <button class="nav-btn" data-screen="settings">设置</button>
+    <div class="random-row">
+      <button class="pill-btn" id="random-btn" type="button">
+        <svg class="ico" aria-hidden="true"><use href="#i-shuffle"/></svg>不知道，随便拆一封
+      </button>
     </div>
   </section>
 
   <!-- 拆信页 -->
-  <section id="letter" class="screen">
-    <div class="letter-header">
-      <button class="back-btn" id="back-from-letter">←</button>
+  <section id="letter" class="screen" aria-labelledby="letter-title">
+    <header class="letter-header">
+      <button class="icon-btn" id="back-from-letter" type="button" aria-label="返回">
+        <svg class="ico" aria-hidden="true"><use href="#i-back"/></svg>
+      </button>
       <div class="letter-meta" id="letter-meta"></div>
-    </div>
+      <button class="icon-btn fav-toggle" id="favorite-top" type="button" aria-label="收藏这封信" aria-pressed="false">
+        <svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg>
+      </button>
+    </header>
     <div class="letter-stage" id="letter-stage">
-      <div class="envelope-closed" id="envelope-closed">
-        <div class="envelope-flap"></div>
-        <div class="envelope-body">
-          <div class="seal"></div>
-        </div>
+      <div class="envelope-wrap" id="envelope-wrap">
+        <button class="envelope-closed" id="envelope-closed" type="button" aria-label="轻触火漆，拆开信封">
+          <span class="envelope-letter" aria-hidden="true"></span>
+          <span class="envelope-body" aria-hidden="true"></span>
+          <span class="envelope-flap" aria-hidden="true"></span>
+          <span class="seal" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg></span>
+        </button>
+        <p class="tap-hint" id="tap-hint">轻触火漆，拆开这封信</p>
+        <button class="text-btn" id="skip-anim" type="button">跳过动画</button>
       </div>
-      <div class="letter-paper" id="letter-paper">
-        <h2 class="letter-title" id="letter-title"></h2>
+
+      <article class="letter-paper" id="letter-paper" aria-live="polite">
+        <div class="letter-tag" id="letter-tag"></div>
+        <p class="letter-salutation" id="letter-salutation"></p>
+        <h2 class="letter-title" id="letter-title" tabindex="-1"></h2>
         <div class="letter-body" id="letter-body"></div>
+        <p class="letter-sign" id="letter-sign"></p>
+        <p class="letter-date" id="letter-date"></p>
         <div class="letter-actions">
-          <button id="favorite-btn">收藏</button>
-          <button id="share-btn">生成图片</button>
-          <button id="close-letter">放回信箱</button>
+          <button class="act-btn fav-toggle" id="favorite-btn" type="button" aria-pressed="false">
+            <svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg><span class="lbl">收藏</span>
+          </button>
+          <button class="act-btn" id="share-btn" type="button">
+            <svg class="ico" aria-hidden="true"><use href="#i-image"/></svg><span>生成图片</span>
+          </button>
         </div>
-      </div>
+        <div class="letter-actions secondary">
+          <button class="text-btn" id="another-btn" type="button">同一个心情，再拆一封</button>
+          <button class="pill-btn solid" id="close-letter" type="button">放回信箱</button>
+        </div>
+      </article>
     </div>
   </section>
 
   <!-- 历史信箱 -->
-  <section id="history" class="screen">
-    <div class="header">
-      <button class="back-btn" data-screen="home">←</button>
-      <div class="logo">我们的信箱</div>
-      <div></div>
-    </div>
+  <section id="history" class="screen" aria-labelledby="history-title">
+    <header class="header">
+      <h1 class="logo" id="history-title">我们的信箱</h1>
+      <span class="count" id="history-count"></span>
+    </header>
     <div class="search-bar">
-      <input type="text" id="search-input" placeholder="搜索信件或心情...">
+      <label class="search-field">
+        <svg class="ico" aria-hidden="true"><use href="#i-search"/></svg>
+        <span class="sr-only">搜索信件</span>
+        <input type="search" id="search-input" placeholder="搜索信件或心情..." autocomplete="off" enterkeyhint="search">
+      </label>
     </div>
-    <div class="history-list" id="history-list"></div>
-    <div class="history-actions">
-      <button id="export-btn">导出备份</button>
-      <button id="import-btn">导入备份</button>
-      <input type="file" id="import-file" accept=".json" hidden>
-      <button id="clear-btn" class="danger">清空</button>
+    <div class="tabs" role="tablist" aria-label="筛选信件">
+      <button class="tab active" role="tab" aria-selected="true" data-filter="all" type="button">全部 <span class="tab-n" id="n-all">0</span></button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="fav" type="button">
+        <svg class="ico ico-sm" aria-hidden="true"><use href="#i-heart"/></svg>收藏 <span class="tab-n" id="n-fav">0</span></button>
+    </div>
+    <ul class="history-list" id="history-list" aria-live="polite"></ul>
+    <div class="data-box">
+      <h2 class="section-label">备份与数据</h2>
+      <div class="history-actions">
+        <button id="export-btn" type="button"><svg class="ico ico-sm" aria-hidden="true"><use href="#i-download"/></svg>导出备份</button>
+        <button id="import-btn" type="button"><svg class="ico ico-sm" aria-hidden="true"><use href="#i-share"/></svg>导入备份</button>
+        <input type="file" id="import-file" accept=".json,application/json" hidden>
+        <button id="clear-btn" class="danger" type="button">清空</button>
+      </div>
     </div>
   </section>
 
   <!-- 设置 -->
-  <section id="settings" class="screen">
-    <div class="header">
-      <button class="back-btn" data-screen="home">←</button>
-      <div class="logo">设置</div>
-      <div></div>
-    </div>
+  <section id="settings" class="screen" aria-labelledby="settings-title">
+    <header class="header">
+      <h1 class="logo" id="settings-title">设置</h1>
+    </header>
     <div class="settings-content">
-      <div class="setting-item">
-        <label>你的名字</label>
-        <input type="text" id="input-user-name" placeholder="你的昵称">
+      <form id="names-form" class="card" novalidate>
+        <h2 class="section-label">名字</h2>
+        <div class="setting-item">
+          <label for="input-user-name">你的名字</label>
+          <input type="text" id="input-user-name" placeholder="你的昵称" maxlength="12" autocomplete="nickname">
+        </div>
+        <div class="setting-item">
+          <label for="input-ta-name">TA 的名字</label>
+          <input type="text" id="input-ta-name" placeholder="梦角名字" maxlength="12" autocomplete="off">
+        </div>
+        <fieldset class="setting-item seg">
+          <legend>信里怎么称呼你</legend>
+          <label><input type="radio" name="call-mode" value="you" checked><span>开头称呼名字，正文用「你」</span></label>
+          <label><input type="radio" name="call-mode" value="name"><span>正文里的「你」也换成名字</span></label>
+        </fieldset>
+        <button id="save-names" type="submit" class="pill-btn solid wide">保存</button>
+      </form>
+
+      <div class="card">
+        <h2 class="section-label">拆信</h2>
+        <label class="switch-row">
+          <span>
+            <span class="switch-title">跳过拆信动画</span>
+            <span class="switch-desc">直接展开信纸（系统开启「减少动态效果」时会自动跳过）</span>
+          </span>
+          <input type="checkbox" id="skip-anim-pref" role="switch">
+          <span class="switch" aria-hidden="true"></span>
+        </label>
       </div>
-      <div class="setting-item">
-        <label>TA 的名字</label>
-        <input type="text" id="input-ta-name" placeholder="梦角名字">
+
+      <div class="card" id="install-card" hidden>
+        <h2 class="section-label">安装到手机</h2>
+        <p class="card-text" id="install-text">把信箱放到主屏幕，像 App 一样打开，没有网络也能读信。</p>
+        <button id="install-btn" type="button" class="pill-btn solid wide" hidden>添加到主屏幕</button>
       </div>
-      <button id="save-names">保存</button>
+
       <div class="disclaimer">
         <p>这是一款虚构的角色代入式互动体验。</p>
         <p>所有信件均为人工撰写的虚构内容，并非来自任何真实人物的真实讯息。</p>
-        <p>数据仅保存在你的浏览器本地，清除缓存或更换设备可能导致记录丢失。</p>
+        <p>数据仅保存在你的浏览器本地，清除缓存或更换设备可能导致记录丢失，记得定期导出备份。</p>
+        <p class="version" id="app-version"></p>
       </div>
     </div>
   </section>
+  </main>
+
+  <nav class="bottom-nav" id="bottom-nav" aria-label="主导航">
+    <button class="nav-btn active" data-screen="home" type="button" aria-current="page">
+      <svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg><span>信箱</span></button>
+    <button class="nav-btn" data-screen="history" type="button">
+      <svg class="ico" aria-hidden="true"><use href="#i-box"/></svg><span>我们的信箱</span></button>
+    <button class="nav-btn" data-screen="settings" type="button">
+      <svg class="ico" aria-hidden="true"><use href="#i-gear"/></svg><span>设置</span></button>
+  </nav>
+</div>
+
+<!-- 分享图片 -->
+<dialog id="share-dialog" class="sheet" aria-labelledby="share-title">
+  <div class="sheet-head">
+    <h2 id="share-title">信纸图片</h2>
+    <button class="icon-btn" id="share-close" type="button" aria-label="关闭"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
+  </div>
+  <div class="share-preview" id="share-preview"><p class="loading">正在誊写…</p></div>
+  <p class="sheet-hint" id="share-hint">手机上也可以长按图片保存</p>
+  <div class="sheet-actions">
+    <button class="pill-btn" id="share-download" type="button"><svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>保存图片</button>
+    <button class="pill-btn solid" id="share-native" type="button" hidden><svg class="ico" aria-hidden="true"><use href="#i-share"/></svg>分享</button>
+  </div>
+</dialog>
+
+<!-- 确认 -->
+<dialog id="confirm-dialog" class="sheet small" aria-labelledby="confirm-title">
+  <h2 id="confirm-title">确定吗？</h2>
+  <p id="confirm-text"></p>
+  <div class="sheet-actions">
+    <button class="pill-btn" id="confirm-cancel" type="button">再想想</button>
+    <button class="pill-btn danger-solid" id="confirm-ok" type="button">确定</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden>
+  <span id="toast-text"></span>
+  <button class="toast-action" id="toast-action" type="button" hidden></button>
 </div>
 
 <script src="app.js"></script>
